@@ -8,7 +8,8 @@
   "mixins": [
     "PlayerMixin",
     "RabbitMixin",
-    "TameableAnimalMixin"
+    "TameableAnimalMixin",
+    "RabbitModelMixin"
   ],
   "injectors": {
     "defaultRequire": 1
