@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "package": "tired9494.tameable_rabbits.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "minVersion": "0.8",
+  "client": [
+  ],
+  "mixins": [
+    "PlayerMixin",
+    "RabbitMixin",
+    "TameableAnimalMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
