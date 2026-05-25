@@ -10,5 +10,6 @@ dependencies {
 
     modImplementation "dev.architectury:architectury:$rootProject.architectury_api_version"
 
-    modImplementation "com.teamresourceful.resourcefulconfig:resourcefulconfig-common-$rootProject.resourcefulconfig_version"
+    modImplementation "com.terraformersmc:modmenu:$rootProject.modmenu_version"
+    modImplementation "eu.midnightdust:midnightlib:${rootProject.midnightlib_version}-fabric"
 }

@@ -6,6 +6,7 @@ import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -33,6 +34,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -41,6 +43,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import tired9494.tameable_rabbits.ModConfig;
 import tired9494.tameable_rabbits.TameableRabbits;
 import tired9494.tameable_rabbits.entity.ModifiedToBeTameable;
 import tired9494.tameable_rabbits.entity.ai.*;
@@ -59,6 +62,8 @@ public abstract class RabbitMixin extends Animal implements ModifiedToBeTameable
     private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = SynchedEntityData.defineId(Rabbit.class, EntityDataSerializers.OPTIONAL_UUID);
     private static final EntityDataAccessor<Boolean> TAMED = SynchedEntityData.defineId(Rabbit.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> ORDERED_TO_SIT = SynchedEntityData.defineId(Rabbit.class, EntityDataSerializers.BOOLEAN);
+
+    Item tameItem = BuiltInRegistries.ITEM.get(ModConfig.tameItem);
 
     protected RabbitMixin(EntityType<? extends Animal> type, Level level) {
         super(type, level);
@@ -172,29 +177,13 @@ public abstract class RabbitMixin extends Animal implements ModifiedToBeTameable
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand interactionHand) {
         ItemStack itemStack = player.getItemInHand(interactionHand);
-        Item item = itemStack.getItem();
         if (!this.level().isClientSide) {
-            if (this.isFood(itemStack) || itemStack.is(Items.OAK_LOG)) {
+            if (this.isFood(itemStack) || itemStack.is(tameItem)) {
                 if (this.isTame()) {
                     if (this.getHealth() < this.getMaxHealth()) {
-                        itemStack.consume(1, player);
-                        FoodProperties foodProperties = itemStack.get(DataComponents.FOOD);
-                        float f = foodProperties != null ? (float)foodProperties.nutrition() : 1.0F;
-                        this.heal(2.0F * f);
-                        return InteractionResult.sidedSuccess(this.level().isClientSide());
-                    } else {
-                        InteractionResult interactionResult = super.mobInteract(player, interactionHand);
-                        if (!interactionResult.consumesAction() && this.getTameOwner() == player) {
-                            this.setOrderedToSit(!this.isSitting());
-                            this.jumping = false;
-                            this.navigation.stop();
-                            this.setTarget(null);
-                            return InteractionResult.SUCCESS_NO_ITEM_USED;
-                        } else {
-                            return interactionResult;
-                        }
+                        return healRabbitWithFood(player, itemStack);
                     }
-                } else if (itemStack.is(Items.OAK_LOG)) {
+                } else if (itemStack.is(tameItem)) {
                     itemStack.consume(1, player);
                     this.tryToTame(player);
                     return InteractionResult.SUCCESS;
@@ -203,14 +192,34 @@ public abstract class RabbitMixin extends Animal implements ModifiedToBeTameable
                     return super.mobInteract(player, interactionHand);
                 }
             }
+            else if (this.isTame()) {
+                InteractionResult interactionResult = super.mobInteract(player, interactionHand);
+                if (!interactionResult.consumesAction() && this.getTameOwner() == player) {
+                    this.setOrderedToSit(!this.isSitting());
+                    this.jumping = false;
+                    this.navigation.stop();
+                    this.setTarget(null);
+                    return InteractionResult.SUCCESS_NO_ITEM_USED;
+                } else {
+                    return interactionResult;
+                }
+            }
             else {
-                return this.isTame() ? InteractionResult.PASS : InteractionResult.CONSUME;
+                return super.mobInteract(player, interactionHand);
             }
         } else {
-            return this.isTame() || (itemStack.is(Items.OAK_LOG) && !this.isTame()) ?
+            return this.isTame() || (itemStack.is(tameItem) && !this.isTame()) ?
                     InteractionResult.CONSUME : InteractionResult.PASS;
         }
-        //return super.mobInteract(player, interactionHand);
+        return super.mobInteract(player, interactionHand);
+    }
+
+    private @NotNull InteractionResult healRabbitWithFood(Player player, ItemStack itemStack) {
+        itemStack.consume(1, player);
+        FoodProperties foodProperties = itemStack.get(DataComponents.FOOD);
+        float f = foodProperties != null ? (float)foodProperties.nutrition() : 1.0F;
+        this.heal(2.0F * f);
+        return InteractionResult.sidedSuccess(this.level().isClientSide());
     }
 
     private void tryToTame(Player player) {

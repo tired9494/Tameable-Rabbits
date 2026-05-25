@@ -1,11 +1,11 @@
 package tired9494.tameable_rabbits;
 
-import com.teamresourceful.resourcefulconfig.api.annotations.Config;
-import com.teamresourceful.resourcefulconfig.api.annotations.ConfigEntry;
+import eu.midnightdust.lib.config.MidnightConfig;
+import net.minecraft.resources.ResourceLocation;
 
-@Config(value="tameable_rabbits")
-public class ModConfig {
-    @ConfigEntry(
-            type =
-    )
+@SuppressWarnings({"DefaultAnnotationParam"})
+public class ModConfig extends MidnightConfig {
+    public static final String RABBIT = "rabbit";
+
+    @Entry(category = RABBIT) public static ResourceLocation tameItem = ResourceLocation.withDefaultNamespace("hay_block");
 }
