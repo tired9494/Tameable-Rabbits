@@ -11,6 +11,7 @@ architectury {
 allprojects {
     group = rootProject.maven_group
     version = rootProject.mod_version
+
 }
 
 subprojects {
@@ -29,11 +30,20 @@ subprojects {
         // Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
         // See https://docs.gradle.org/current/userguide/declaring_repositories.html
         // for more information about repositories.
+        maven {
+            url = "https://maven.midnightdust.eu/releases"
+        }
+        maven {
+            name = "Terraformers"
+            url = "https://maven.terraformersmc.com/"
+        }
     }
 
     dependencies {
         minecraft "net.minecraft:minecraft:$rootProject.minecraft_version"
         mappings loom.officialMojangMappings()
+        modCompileOnly "com.terraformersmc:modmenu:$rootProject.modmenu_version"
+        modCompileOnly "eu.midnightdust:midnightlib:${rootProject.midnightlib_version}-fabric"
     }
 
     java {
