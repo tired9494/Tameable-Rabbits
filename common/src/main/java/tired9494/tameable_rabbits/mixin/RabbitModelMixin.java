@@ -1,5 +1,6 @@
 package tired9494.tameable_rabbits.mixin;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.RabbitModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.world.entity.animal.Rabbit;
@@ -72,7 +73,7 @@ public class RabbitModelMixin {
     private void ta_rabbitFlopPose(Rabbit rabbit, float f, float g, float h, CallbackInfo ci) {
         if (rabbit instanceof ModifiedToBeTameable tameableRabbit) {
             if (tameableRabbit.isSitting()) {
-                this.jumpRotation = (float) Math.PI;
+                this.jumpRotation = -1f;
                 this.leftRearFoot.setPos(4.75F, 21.25F, 1.7F);
                 this.leftRearFoot.setRotation(0.9813F, -0.2388F, -1.0195F);
                 this.rightRearFoot.setPos(4.5F, 24.25F, 3.45F);
@@ -85,8 +86,8 @@ public class RabbitModelMixin {
                 this.body.setRotation(-0.2754F, -0.0225F, -1.5651F);
                 this.leftFrontLeg.setPos(-0.25F, 23.5F, -1.25F);
                 this.leftFrontLeg.setRotation(-1.3428F, 0.7304F, -2.0451F);
-                this.rightFrontLeg.setPos(-4.0F, 23.0F, -1.0F);
-                this.rightFrontLeg.setRotation (-1.0172F, -0.0092F, -1.5495F);
+                this.rightFrontLeg.setPos(-3.0F, 23.0F, -2.0F);
+                this.rightFrontLeg.setRotation (-1.2654F, 0.0F, -1.5708F);
                 this.head.setPos(-3.0F, 23.0F, -2.0F);
                 this.head.setRotation(-0.0338F, -0.2411F, -0.4776F);
                 this.leftEar.setPos(-3.0F, 23.0F, -2.0F);
@@ -123,6 +124,28 @@ public class RabbitModelMixin {
                 this.tail.setRotation(-0.3490659F, 0.0F, 0.0F);
                 this.nose.setPos(0.0F, 16.0F, -1.0F);
                 this.nose.setRotation(0F, 0F, 0F);
+            }
+        }
+    }
+    @Inject(
+            at = {@At("TAIL")},
+            remap = true,
+            method = {"setupAnim(Lnet/minecraft/world/entity/animal/Rabbit;FFFFF)V"}
+    )
+    private void ta_fixRabbitLegs(Rabbit rabbit, float f, float g, float h, float i, float j, CallbackInfo ci) {
+        if (rabbit instanceof ModifiedToBeTameable tameableRabbit) {
+            if (tameableRabbit.isSitting()) {
+                this.leftRearFoot.xRot = 0.9813F;
+
+                this.rightRearFoot.xRot = 1.2955F;
+
+                this.leftHaunch.xRot = 0.5198F;
+
+                this.rightHaunch.xRot = -0.0572F;
+
+                this.leftFrontLeg.xRot = -1.3428F;
+
+                this.rightFrontLeg.xRot = -1.2654F;
             }
         }
     }
