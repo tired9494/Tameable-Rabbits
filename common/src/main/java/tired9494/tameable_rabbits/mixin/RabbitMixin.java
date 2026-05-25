@@ -4,6 +4,8 @@ import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.Util;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -212,16 +214,27 @@ public abstract class RabbitMixin extends Animal implements ModifiedToBeTameable
     }
 
     private void tryToTame(Player player) {
+        ServerLevel serverLevel = (ServerLevel) this.level();
         if (this.random.nextInt(3) == 0) {
             this.tame(player);
             this.navigation.stop();
             this.setTarget(null);
             this.setOrderedToSit(true);
-            this.level().broadcastEntityEvent(this, EntityEvent.TAMING_SUCCEEDED);
+            serverLevel.broadcastEntityEvent(this, EntityEvent.TAMING_SUCCEEDED);
+            sendParticles(ParticleTypes.HEART);
         } else {
-            this.level().broadcastEntityEvent(this, EntityEvent.TAMING_FAILED);
+            serverLevel.broadcastEntityEvent(this, EntityEvent.TAMING_FAILED);
+            sendParticles(ParticleTypes.SMOKE);
         }
+    }
 
+    private void sendParticles(SimpleParticleType particleType) {
+        for (int i = 0; i < 3; ++i) {
+            double d0 = this.getRandom().nextGaussian() * 0.02D;
+            double d1 = this.getRandom().nextGaussian() * 0.02D;
+            double d2 = this.getRandom().nextGaussian() * 0.02D;
+            ((ServerLevel) this.level()).sendParticles(particleType, this.getRandomX(1.0D), this.getRandomY() + 0.5D, this.getRandomZ(1.0D), 3, d0, d1, d2, 0.02F);
+        }
     }
 
     public void tame(Player player) {
