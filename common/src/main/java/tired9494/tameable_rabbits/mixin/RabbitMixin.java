@@ -196,7 +196,9 @@ public abstract class RabbitMixin extends Animal implements ModifiedToBeTameable
                 InteractionResult interactionResult = super.mobInteract(player, interactionHand);
                 if (!interactionResult.consumesAction() && this.getTameOwner() == player) {
                     this.setOrderedToSit(!this.isSitting());
-                    this.jumping = false;
+                    Rabbit.RabbitJumpControl rabbitJumpControl = (Rabbit.RabbitJumpControl)this.jumpControl;
+                    rabbitJumpControl.setCanJump(false);
+                    this.setJumping(false);
                     this.navigation.stop();
                     this.setTarget(null);
                     return InteractionResult.SUCCESS_NO_ITEM_USED;
@@ -226,6 +228,9 @@ public abstract class RabbitMixin extends Animal implements ModifiedToBeTameable
         ServerLevel serverLevel = (ServerLevel) this.level();
         if (this.random.nextInt(3) == 0) {
             this.tame(player);
+            Rabbit.RabbitJumpControl rabbitJumpControl = (Rabbit.RabbitJumpControl)this.jumpControl;
+            rabbitJumpControl.setCanJump(false);
+            this.setJumping(false);
             this.navigation.stop();
             this.setTarget(null);
             this.setOrderedToSit(true);
@@ -306,7 +311,6 @@ public abstract class RabbitMixin extends Animal implements ModifiedToBeTameable
 
     public void setOrderedToSit(boolean value) {
         this.entityData.set(ORDERED_TO_SIT, value);
-        TameableRabbits.LOGGER.info("Set rabbit to sit: ", value);
     }
 
     public boolean isValidAttackTarget(LivingEntity target) {
