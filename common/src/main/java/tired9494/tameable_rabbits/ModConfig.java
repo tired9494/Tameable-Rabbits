@@ -1,13 +1,11 @@
 package tired9494.tameable_rabbits;
 
-import eu.midnightdust.lib.config.MidnightConfig;
+import com.teamresourceful.resourcefulconfig.api.annotations.Config;
+import com.teamresourceful.resourcefulconfig.api.annotations.ConfigEntry;
 
-public class ModConfig extends MidnightConfig {
-    public static final String SPLASHLING = "splashling";
-    public static final String ASHLING = "ashling";
-
-    @Entry(category = SPLASHLING) public static int splashlingBucketCapacity = 8;
-
-    @Entry(category = ASHLING) public static int ashlingBucketCapacity = 4;
-
+@Config(value="tameable_rabbits")
+public class ModConfig {
+    @ConfigEntry(
+            type =
+    )
 }
