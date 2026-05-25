@@ -61,35 +61,39 @@ public class RabbitModelMixin {
     @Final
     private ModelPart nose;
 
+    @Shadow
+    private float jumpRotation;
+
     @Inject(
-            at = {@At("HEAD")},
+            at = {@At("TAIL")},
             remap = true,
             method = {"prepareMobModel(Lnet/minecraft/world/entity/animal/Rabbit;FFF)V"}
     )
     private void ta_rabbitFlopPose(Rabbit rabbit, float f, float g, float h, CallbackInfo ci) {
         if (rabbit instanceof ModifiedToBeTameable tameableRabbit) {
             if (tameableRabbit.isSitting()) {
-                this.leftRearFoot.setPos(2.0F, 19.5F, 3.7F);
-                this.leftRearFoot.setRotation(0.2919F, -0.0232F, -1.5702F);
-                this.rightRearFoot.setPos(-7.0F, 5.5F, -2.7F);
-                this.rightRearFoot.setRotation(0.7599F, -0.1034F, 0.5848F);
+                this.jumpRotation = (float) Math.PI;
+                this.leftRearFoot.setPos(4.75F, 21.25F, 1.7F);
+                this.leftRearFoot.setRotation(0.9813F, -0.2388F, -1.0195F);
+                this.rightRearFoot.setPos(4.5F, 24.25F, 3.45F);
+                this.rightRearFoot.setRotation(1.2955F, -0.013F, -1.59F);
                 this.leftHaunch.setPos(2.0F, 19.5F, 3.7F);
                 this.leftHaunch.setRotation(0.5198F, -0.2411F, -1.2561F);
-                this.rightHaunch.setPos(-4.0F, 19.5F, 3.7F);
+                this.rightHaunch.setPos(1.5F, 24.0F, 3.2F);
                 this.rightHaunch.setRotation(-0.0572F, -0.0232F, -1.5702F);
                 this.body.setPos(-1.0F, 21.0F, 8.0F);
                 this.body.setRotation(-0.2754F, -0.0225F, -1.5651F);
-                this.leftFrontLeg.setPos(3.7747F, 0.818F, -4.2143F);
-                this.leftFrontLeg.setRotation(-1.2998F, 0.9338F, -0.4321F);
+                this.leftFrontLeg.setPos(-0.25F, 23.5F, -1.25F);
+                this.leftFrontLeg.setRotation(-1.3428F, 0.7304F, -2.0451F);
                 this.rightFrontLeg.setPos(-4.0F, 23.0F, -1.0F);
-                this.rightFrontLeg.setRotation(-1.0172F, -0.0092F, -1.5495F);
+                this.rightFrontLeg.setRotation (-1.0172F, -0.0092F, -1.5495F);
                 this.head.setPos(-3.0F, 23.0F, -2.0F);
                 this.head.setRotation(-0.0338F, -0.2411F, -0.4776F);
                 this.leftEar.setPos(-3.0F, 23.0F, -2.0F);
                 this.leftEar.setRotation(-0.0328F, 0.0205F, -0.4864F);
                 this.rightEar.setPos(-3.0F, 23.0F, -2.0F);
                 this.rightEar.setRotation(-0.0374F, -0.5027F, -0.4677F);
-                this.tail.setPos(-1.0F, 21.0F, 7.0F);
+                this.tail.setPos(0.0F, 22.0F, 7.0F);
                 this.tail.setRotation(-0.0572F, -0.0232F, -1.5702F);
                 this.nose.setPos(-3.0F, 23.0F, -2.0F);
                 this.nose.setRotation(-0.0338F, -0.2411F, -0.4776F);
