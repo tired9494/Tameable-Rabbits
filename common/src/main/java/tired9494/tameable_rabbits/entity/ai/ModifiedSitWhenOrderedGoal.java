@@ -32,6 +32,7 @@ public class ModifiedSitWhenOrderedGoal extends Goal {
 
     public void start() {
         this.animal.getNavigation().stop();
+        this.animal.setJumping(false);
     }
 
     public void stop() {

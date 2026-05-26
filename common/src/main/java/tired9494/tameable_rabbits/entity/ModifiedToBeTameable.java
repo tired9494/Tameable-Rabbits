@@ -16,9 +16,7 @@ public interface ModifiedToBeTameable extends OwnableEntity {
     @Nullable
     LivingEntity getTameOwner();
 
-    default boolean isSitting() {
-        return false;
-    };
+    boolean isSitting();
 
     boolean isValidAttackTarget(LivingEntity target);
 
