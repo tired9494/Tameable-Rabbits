@@ -15,6 +15,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.*;
@@ -79,7 +80,7 @@ public abstract class RabbitMixin extends Animal implements ModifiedToBeTameable
         this.goalSelector.addGoal(2, new ModifiedFollowOwnerGoal(this, 2.0D, 10.0F, 3.0F, false));
         this.targetSelector.addGoal(2, new ModifiedOwnerHurtTargetGoal(this));
         this.targetSelector.addGoal(3, new ModifiedOwnerHurtByTargetGoal(this));
-        this.goalSelector.addGoal(3, new TemptGoal(this, 1.5D, Ingredient.of(Items.HAY_BLOCK), false));
+        this.goalSelector.addGoal(3, new TemptGoal(this, 1.5D, (itemStack) -> itemStack.is(tameItem), false));
         if(isTame()){
             removeUntamedGoals();
         }
@@ -196,7 +197,6 @@ public abstract class RabbitMixin extends Animal implements ModifiedToBeTameable
                 InteractionResult interactionResult = super.mobInteract(player, interactionHand);
                 if (!interactionResult.consumesAction() && this.getTameOwner() == player) {
                     this.setOrderedToSit(!this.isSitting());
-                    this.setJumping(false);
                     this.navigation.stop();
                     this.setTarget(null);
                     return InteractionResult.SUCCESS_NO_ITEM_USED;
@@ -224,9 +224,8 @@ public abstract class RabbitMixin extends Animal implements ModifiedToBeTameable
 
     private void tryToTame(Player player) {
         ServerLevel serverLevel = (ServerLevel) this.level();
-        if (this.random.nextInt(3) == 0) {
+        if (this.random.nextFloat() <= ModConfig.tameChance) {
             this.tame(player);
-            this.setJumping(false);
             this.navigation.stop();
             this.setTarget(null);
             this.setOrderedToSit(true);
@@ -307,8 +306,6 @@ public abstract class RabbitMixin extends Animal implements ModifiedToBeTameable
 
     public void setOrderedToSit(boolean value) {
         this.entityData.set(ORDERED_TO_SIT, value);
-        Rabbit.RabbitJumpControl rabbitJumpControl = (Rabbit.RabbitJumpControl)this.jumpControl;
-        rabbitJumpControl.setCanJump(value);
     }
 
     public boolean isValidAttackTarget(LivingEntity target) {

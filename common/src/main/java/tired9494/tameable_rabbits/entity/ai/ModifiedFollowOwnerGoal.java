@@ -20,7 +20,6 @@ public class ModifiedFollowOwnerGoal extends Goal {
     private final PathNavigation navigation;
     private final float stopDistance;
     private final float startDistance;
-    private final boolean canFly;
     private LivingEntity owner;
     private int timeToRecalcPath;
     private float oldWaterMalus;
@@ -32,7 +31,6 @@ public class ModifiedFollowOwnerGoal extends Goal {
         this.navigation = animal.getNavigation();
         this.startDistance = startDistance;
         this.stopDistance = stopDistance;
-        this.canFly = flies;
         this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
     }
 
@@ -49,6 +47,18 @@ public class ModifiedFollowOwnerGoal extends Goal {
         } else {
             this.owner = owner;
             return true;
+        }
+    }
+
+    public boolean canContinueToUse() {
+        if (owner == null) {
+            return false;
+        } else if (this.navigation.isDone()) {
+            return false;
+        } else if (((ModifiedToBeTameable)this.tameableAnimal).isSitting()) {
+            return false;
+        } else {
+            return !(this.tameableAnimal.distanceToSqr(this.owner) <= this.stopDistance*this.stopDistance);
         }
     }
 

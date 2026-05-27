@@ -8,4 +8,5 @@ public class ModConfig extends MidnightConfig {
     public static final String RABBIT = "rabbit";
 
     @Entry(category = RABBIT) public static ResourceLocation tameItem = ResourceLocation.withDefaultNamespace("hay_block");
+    @Entry(category = RABBIT) public static float tameChance = 0.33F;
 }

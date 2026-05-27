@@ -2,6 +2,7 @@ package tired9494.tameable_rabbits.entity.ai;
 
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.animal.Rabbit;
 import tired9494.tameable_rabbits.entity.ModifiedToBeTameable;
 
 import java.util.EnumSet;
@@ -32,9 +33,13 @@ public class ModifiedSitWhenOrderedGoal extends Goal {
 
     public void start() {
         this.animal.getNavigation().stop();
+        Rabbit.RabbitJumpControl rabbitJumpControl = (Rabbit.RabbitJumpControl) this.animal.getJumpControl();
+        rabbitJumpControl.setCanJump(false);
         this.animal.setJumping(false);
     }
 
     public void stop() {
+        Rabbit.RabbitJumpControl rabbitJumpControl = (Rabbit.RabbitJumpControl) this.animal.getJumpControl();
+        rabbitJumpControl.setCanJump(true);
     }
 }
