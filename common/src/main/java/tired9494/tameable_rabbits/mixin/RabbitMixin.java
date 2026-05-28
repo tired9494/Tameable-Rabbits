@@ -78,8 +78,9 @@ public abstract class RabbitMixin extends Animal implements ModifiedToBeTameable
     private void ta_registerGoals(CallbackInfo callbackInfo) {
         this.goalSelector.addGoal(1, new ModifiedSitWhenOrderedGoal(this));
         this.goalSelector.addGoal(2, new ModifiedFollowOwnerGoal(this, 2.0D, 10.0F, 3.0F, false));
-        this.targetSelector.addGoal(2, new ModifiedOwnerHurtTargetGoal(this));
-        this.targetSelector.addGoal(3, new ModifiedOwnerHurtByTargetGoal(this));
+        //this.targetSelector.addGoal(2, new ModifiedOwnerHurtTargetGoal(this));
+        //this.targetSelector.addGoal(3, new ModifiedOwnerHurtByTargetGoal(this));
+        // rabbit attacks not implemented yet
         this.goalSelector.addGoal(3, new TemptGoal(this, 1.5D, (itemStack) -> itemStack.is(tameItem), false));
         if(isTame()){
             removeUntamedGoals();

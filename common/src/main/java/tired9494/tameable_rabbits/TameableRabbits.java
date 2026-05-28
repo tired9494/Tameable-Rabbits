@@ -1,5 +1,6 @@
 package tired9494.tameable_rabbits;
 
+import eu.midnightdust.lib.config.MidnightConfig;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -8,7 +9,7 @@ public final class TameableRabbits {
     public static final Logger LOGGER = LogManager.getLogger();
 
     public static void init() {
-        // Write common init code here.
+        MidnightConfig.init("tameable_rabbits", ModConfig.class);
     }
 
 }

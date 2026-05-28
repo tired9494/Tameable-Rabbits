@@ -1,7 +1,7 @@
 modLoader = "javafml"
 loaderVersion = "[2,)"
 #issueTrackerURL = ""
-license = "MIT"
+license = "AGPL-3.0-or-later"
 
 [[mods]]
 modId = "tameable_rabbits"
@@ -11,7 +11,7 @@ authors = "tired9494"
 description = '''
 
 '''
-#logoFile = ""
+logoFile = "assets/tameable_rabbits/icon.png"
 
 [[dependencies.tameable_rabbits]]
 modId = "neoforge"
@@ -23,7 +23,7 @@ side = "BOTH"
 [[dependencies.tameable_rabbits]]
 modId = "minecraft"
 type = "required"
-versionRange = "[1.21.1,)"
+versionRange = "[1.21,)"
 ordering = "NONE"
 side = "BOTH"
 

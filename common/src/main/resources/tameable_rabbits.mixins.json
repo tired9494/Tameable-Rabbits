@@ -4,12 +4,12 @@
   "compatibilityLevel": "JAVA_21",
   "minVersion": "0.8",
   "client": [
+    "RabbitModelMixin"
   ],
   "mixins": [
     "PlayerMixin",
     "RabbitMixin",
-    "TameableAnimalMixin",
-    "RabbitModelMixin"
+    "TameableAnimalMixin"
   ],
   "injectors": {
     "defaultRequire": 1
