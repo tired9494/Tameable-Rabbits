@@ -36,7 +36,7 @@ dependencies {
 
     modImplementation "dev.architectury:architectury-neoforge:$rootProject.architectury_api_version"
 
-    modImplementation "eu.midnightdust:midnightlib:${rootProject.midnightlib_version}-neoforge"
+    modImplementation include ("eu.midnightdust:midnightlib:${rootProject.midnightlib_version}-neoforge")
 
     common(project(path: ':common', configuration: 'namedElements')) { transitive false }
     shadowBundle project(path: ':common', configuration: 'transformProductionNeoForge')

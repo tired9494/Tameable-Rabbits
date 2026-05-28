@@ -19,6 +19,7 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.world.entity.ai.goal.TemptGoal;
@@ -280,6 +281,7 @@ public abstract class RabbitMixin extends Animal implements ModifiedToBeTameable
         this.entityData.set(TAMED, tamed);
         if (tamed){
             removeUntamedGoals();
+            this.getAttributes().getInstance(Attributes.FALL_DAMAGE_MULTIPLIER).setBaseValue(0);
         }
     }
     @Nullable
